@@ -1,7 +1,8 @@
 name: kick_chat
 description: kick_chat allows you to read a Kick chat.
 version: 0.0.1
-homepage:
+homepage: https://github.com/LezdCS/kick_chat
+repository: https://github.com/LezdCS/kick_chat
 
 environment:
   sdk: '>=3.1.4 <4.0.0'
@@ -12,6 +13,7 @@ dependencies:
     sdk: flutter
   web_socket_channel: ^2.4.0
   dio: ^5.3.4
+  fk_user_agent: ^2.1.0
 
 dev_dependencies:
   flutter_test:
