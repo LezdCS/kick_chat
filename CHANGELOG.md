@@ -45,3 +45,7 @@ Bump depedencies
 ## 1.2.0
 
 Bump depedencies
+
+## 1.3.0
+
+Push key as parameter
