@@ -6,7 +6,7 @@ import 'package:kick_chat/kick_chat.dart';
 void main() {
   String username = 'xqc';
   test('Listen to a Kick chat', () async {
-    KickChat chat = KickChat(username);
+    KickChat chat = KickChat(username, '32cbd69e4b950bf97679');
     chat.connect();
     chat.chatStream.listen((message) {
       final KickEvent? kickEvent = eventParser(message);
