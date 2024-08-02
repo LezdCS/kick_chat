@@ -2,17 +2,17 @@ import 'dart:convert';
 
 import 'package:kick_chat/src/kick_event.dart';
 
-class KickFollowersUpdated extends KickEvent {
+class KickChatroomClear extends KickEvent {
   final Data data;
 
-  KickFollowersUpdated({
+  KickChatroomClear({
     required super.event,
     required this.data,
     required super.channel,
   });
 
-  factory KickFollowersUpdated.fromJson(Map<String, dynamic> map) {
-    return KickFollowersUpdated(
+  factory KickChatroomClear.fromJson(Map<String, dynamic> map) {
+    return KickChatroomClear(
       event: TypeEvent.followersUpdated,
       data: Data.fromJson(jsonDecode(map['data'])),
       channel: map['channel'],
@@ -26,23 +26,20 @@ class KickFollowersUpdated extends KickEvent {
 }
 
 class Data {
-  final int followersCount;
-  final int epochTimeLastFollow;
+  final String id;
 
   Data({
-    required this.followersCount,
-    required this.epochTimeLastFollow,
+    required this.id,
   });
 
   factory Data.fromJson(Map<String, dynamic> map) {
     return Data(
-      followersCount: int.parse(map['followersCount'].toString()),
-      epochTimeLastFollow: map['created_at'],
+      id: map['id'],
     );
   }
 
   @override
   String toString() {
-    return 'followersCount: $followersCount, epochTimeLastFollow: $epochTimeLastFollow';
+    return 'id: $id';
   }
 }

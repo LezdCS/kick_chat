@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:kick_chat/src/kick_event.dart';
 
 class KickMessage extends KickEvent {
-  final Data data;
+  final Message data;
 
   KickMessage({
     required super.event,
@@ -14,7 +14,7 @@ class KickMessage extends KickEvent {
   factory KickMessage.fromJson(Map<String, dynamic> map) {
     return KickMessage(
       event: TypeEvent.message,
-      data: Data.fromJson(jsonDecode(map['data'])),
+      data: Message.fromJson(jsonDecode(map['data'])),
       channel: map['channel'],
     );
   }
@@ -25,7 +25,7 @@ class KickMessage extends KickEvent {
   }
 }
 
-class Data {
+class Message {
   final String id;
   final int chatroomId;
   final String content;
@@ -33,7 +33,7 @@ class Data {
   final String createdAt;
   final Sender sender;
 
-  Data({
+  Message({
     required this.id,
     required this.chatroomId,
     required this.content,
@@ -42,8 +42,8 @@ class Data {
     required this.sender,
   });
 
-  factory Data.fromJson(Map<String, dynamic> map) {
-    return Data(
+  factory Message.fromJson(Map<String, dynamic> map) {
+    return Message(
       id: map['id'],
       chatroomId: map['chatroom_id'],
       content: map['content'],

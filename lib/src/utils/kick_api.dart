@@ -13,25 +13,17 @@ class KickApi {
     var dio = Dio();
 
     try {
-      String userAgent = '';
-      if(Platform.isAndroid){
-        userAgent = FkUserAgent.webViewUserAgent ?? '';
-      } else if (Platform.isIOS){
-        userAgent = FkUserAgent.webViewUserAgent ?? '';
-      } else if (Platform.isLinux){
-        userAgent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1';
-      } else if (Platform.isMacOS){
-        userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko)';
-      } else if (Platform.isWindows){
-        userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)';
-      } else if (Platform.isFuchsia){
-        userAgent = 'Mozilla/5.0 (X11; CrOS x86_64 8172.45.0) AppleWebKit/537.36 (KHTML, like Gecko)';
+      String? userAgent;
+      if (Platform.isAndroid || Platform.isIOS) {
+        userAgent = FkUserAgent.userAgent;
       }
-      dio.options.headers['User-Agent'] = userAgent;
+      if (userAgent != null) {
+        dio.options.headers['User-Agent'] = userAgent;
+      }
       response = await dio.get(
         "https://kick.com/api/v2/channels/$username",
       );
-      return KickUser.fromJson(jsonDecode(response.data)) ;
+      return KickUser.fromJson(jsonDecode(response.data));
     } on DioException catch (e) {
       debugPrint(e.toString());
       return null;

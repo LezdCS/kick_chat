@@ -31,6 +31,11 @@ class KickUser {
       chatRoom: ChatRoom.fromJson(map['chatroom'])
     );
   }
+
+  @override
+  String toString() {
+    return 'id: $id, userId: $userId, slug: $slug, followersCount: $followersCount, subBadges: $subBadges, chatRoom: $chatRoom';
+  }
 }
 
 class ChatRoom {

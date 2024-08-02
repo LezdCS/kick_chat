@@ -2,17 +2,17 @@ import 'dart:convert';
 
 import 'package:kick_chat/src/kick_event.dart';
 
-class KickFollowersUpdated extends KickEvent {
+class KickMessageDeleted extends KickEvent {
   final Data data;
 
-  KickFollowersUpdated({
+  KickMessageDeleted({
     required super.event,
     required this.data,
     required super.channel,
   });
 
-  factory KickFollowersUpdated.fromJson(Map<String, dynamic> map) {
-    return KickFollowersUpdated(
+  factory KickMessageDeleted.fromJson(Map<String, dynamic> map) {
+    return KickMessageDeleted(
       event: TypeEvent.followersUpdated,
       data: Data.fromJson(jsonDecode(map['data'])),
       channel: map['channel'],
@@ -26,23 +26,37 @@ class KickFollowersUpdated extends KickEvent {
 }
 
 class Data {
-  final int followersCount;
-  final int epochTimeLastFollow;
+  final String id;
+  final Message message;
 
   Data({
-    required this.followersCount,
-    required this.epochTimeLastFollow,
+    required this.id,
+    required this.message,
   });
 
   factory Data.fromJson(Map<String, dynamic> map) {
     return Data(
-      followersCount: int.parse(map['followersCount'].toString()),
-      epochTimeLastFollow: map['created_at'],
+      id: map['id'],
+      message: Message.fromJson(map['message']),
     );
   }
 
   @override
   String toString() {
-    return 'followersCount: $followersCount, epochTimeLastFollow: $epochTimeLastFollow';
+    return 'id: $id, message: $message';
+  }
+}
+
+class Message {
+  final String id;
+
+  Message({
+    required this.id,
+  });
+
+  factory Message.fromJson(Map<String, dynamic> map) {
+    return Message(
+      id: map['id'],
+    );
   }
 }
