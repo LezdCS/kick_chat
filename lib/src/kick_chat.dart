@@ -5,13 +5,13 @@ import 'package:api_7tv/api_7tv.dart';
 import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kick_chat/kick_chat.dart';
-import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class KickChat {
   String username;
   String pushKey;
 
-  IOWebSocketChannel? _webSocketChannel;
+  WebSocketChannel? _webSocketChannel;
   StreamSubscription? _streamSubscription;
 
   KickUser? userDetails;
@@ -31,7 +31,7 @@ class KickChat {
   });
 
   static Future init() async {
-    if(!Platform.isAndroid && !Platform.isIOS) {
+    if (!Platform.isAndroid && !Platform.isIOS) {
       return;
     }
     await FkUserAgent.init();
@@ -44,15 +44,23 @@ class KickChat {
     }
 
     // get channel 7tv emotes
-    List result = await SeventvApi.getKickChannelEmotes(userDetails!.userId.toString()) ?? [];
+    List result =
+        await SeventvApi.getKickChannelEmotes(userDetails!.userId.toString()) ??
+            [];
     seventvEmotes.addAll(result);
 
-    _webSocketChannel = IOWebSocketChannel.connect(
-        "wss://ws-us2.pusher.com/app/{$pushKey}?protocol=7&client=js&version=7.6.0&flash=false");
+    Uri url = Uri.parse(
+      "wss://ws-us2.pusher.com/app/$pushKey?protocol=7&client=js&version=7.6.0&flash=false",
+    );
+    _webSocketChannel = WebSocketChannel.connect(
+      url,
+    );
     _webSocketChannel?.sink.add(
-        '{"event":"pusher:subscribe","data":{"auth":"","channel":"channel.${userDetails!.id}"}}');
+      '{"event":"pusher:subscribe","data":{"auth":"","channel":"channel.${userDetails!.id}"}}',
+    );
     _webSocketChannel?.sink.add(
-        '{"event":"pusher:subscribe","data":{"auth":"","channel":"chatrooms.${userDetails!.chatRoom.id}.v2"}}');
+      '{"event":"pusher:subscribe","data":{"auth":"","channel":"chatrooms.${userDetails!.chatRoom.id}.v2"}}',
+    );
 
     _streamSubscription = _webSocketChannel?.stream.listen(
       (data) => _chatListener(data),
@@ -67,6 +75,9 @@ class KickChat {
   }
 
   Future<void> _onDone() async {
+    debugPrint(_webSocketChannel?.closeReason);
+    debugPrint(_webSocketChannel?.closeCode.toString());
+
     debugPrint("Kick Chat: Connection closed");
     await close();
     if (onDone != null) {

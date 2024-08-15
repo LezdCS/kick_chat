@@ -49,3 +49,7 @@ Bump depedencies
 ## 1.3.0
 
 Push key as parameter
+
+## 1.4.0
+
+Fix Connect

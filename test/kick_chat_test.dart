@@ -22,14 +22,14 @@ void main() {
   test('Get channel user details', () async {
     WidgetsFlutterBinding.ensureInitialized();
     await KickChat.init();
-    KickUser? userDetails = await KickApi.getUserDetails('xqc');
+    KickUser? userDetails = await KickApi.getUserDetails(username);
     expect(668, userDetails?.id);
   });
 
   test('Get 7TV Kick channel emotes', () async {
     WidgetsFlutterBinding.ensureInitialized();
     await KickChat.init();
-    KickUser? userDetails = await KickApi.getUserDetails('xqc');
+    KickUser? userDetails = await KickApi.getUserDetails(username);
     if(userDetails == null) throw Exception('User details not found');
     List? emotes = await SeventvApi.getKickChannelEmotes(userDetails.userId.toString()) ?? [];
     debugPrint(emotes.length.toString());
