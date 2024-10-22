@@ -53,3 +53,6 @@ Push key as parameter
 ## 1.4.0
 
 Fix Connect
+
+## 1.5.0
+- Breaking changes: Rework the way we send events in the chatStream
