@@ -8,7 +8,7 @@ import 'package:kick_chat/kick_chat.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 typedef MessageDeletedCallback = void Function(String);
-typedef ChatroomClearCallback = void Function(KickChat);
+typedef ChatroomClearCallback = void Function(String);
 
 class KickChat {
   String username;
@@ -122,7 +122,10 @@ class KickChat {
 
   void _chatListener(String message) {
     final KickEvent? kickEvent = eventParser(message);
-    switch (kickEvent?.event) {
+    if (kickEvent == null) {
+      return;
+    }
+    switch (kickEvent.event) {
       case TypeEvent.message:
         _chatStreamController.add(kickEvent as KickMessage);
         break;
@@ -148,7 +151,7 @@ class KickChat {
         break;
       case TypeEvent.chatroomClearEvent:
         // KickChatroomClear event = kickEvent as KickChatroomClear;
-        onChatroomClear!(this);
+        onChatroomClear!(kickEvent.channel);
         break;
       case TypeEvent.giftedSubscriptionsEvent:
         _chatStreamController.add(message as KickGiftedSubscriptions);
@@ -164,8 +167,6 @@ class KickChat {
         if (onDeletedMessageByMessageId != null) {
           onDeletedMessageByMessageId!(event.data.message.id);
         }
-        break;
-      case null:
         break;
     }
   }
