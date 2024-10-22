@@ -8,7 +8,7 @@ import 'package:kick_chat/kick_chat.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 typedef MessageDeletedCallback = void Function(String);
-typedef ChatroomClearCallback = void Function();
+typedef ChatroomClearCallback = void Function(KickChat);
 
 class KickChat {
   String username;
@@ -148,7 +148,7 @@ class KickChat {
         break;
       case TypeEvent.chatroomClearEvent:
         // KickChatroomClear event = kickEvent as KickChatroomClear;
-        onChatroomClear!();
+        onChatroomClear!(this);
         break;
       case TypeEvent.giftedSubscriptionsEvent:
         _chatStreamController.add(message as KickGiftedSubscriptions);
