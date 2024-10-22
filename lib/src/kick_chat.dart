@@ -24,7 +24,7 @@ class KickChat {
   final Function? onError;
 
   final StreamController _chatStreamController = StreamController.broadcast();
-  Stream get chatStream => _chatStreamController.stream;
+  Stream<KickEvent> get chatStream => _chatStreamController.stream.where((event) => event is KickEvent).cast<KickEvent>();
 
   final MessageDeletedCallback? onDeletedMessageByUserId;
   final MessageDeletedCallback? onDeletedMessageByMessageId;

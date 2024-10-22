@@ -56,3 +56,7 @@ Fix Connect
 
 ## 1.5.0
 - Breaking changes: Rework the way we send events in the chatStream
+
+## 1.5.1
+- Breaking changes: The chatStream now can only send KickEvent objects
+- Tests
