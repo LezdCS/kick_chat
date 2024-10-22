@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart';
 import 'package:kick_chat/kick_chat.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+typedef MessageDeletedCallback = void Function(String);
+
 class KickChat {
   String username;
   String pushKey;
@@ -23,12 +25,29 @@ class KickChat {
   final StreamController _chatStreamController = StreamController.broadcast();
   Stream get chatStream => _chatStreamController.stream;
 
+  final MessageDeletedCallback? onDeletedMessageByUserId;
+  final MessageDeletedCallback? onDeletedMessageByMessageId;
+
   KickChat(
     this.username,
     this.pushKey, {
     this.onDone,
     this.onError,
+    this.onDeletedMessageByUserId,
+    this.onDeletedMessageByMessageId,
   });
+
+  set onDeletedMessageByUserId(
+    MessageDeletedCallback? onDeletedMessageByUserId,
+  ) {
+    this.onDeletedMessageByUserId = onDeletedMessageByUserId;
+  }
+
+  set onDeletedMessageByMessageId(
+    MessageDeletedCallback? onDeletedMessageByMessageId,
+  ) {
+    this.onDeletedMessageByMessageId = onDeletedMessageByMessageId;
+  }
 
   static Future init() async {
     if (!Platform.isAndroid && !Platform.isIOS) {
@@ -78,7 +97,6 @@ class KickChat {
     debugPrint(_webSocketChannel?.closeReason);
     debugPrint(_webSocketChannel?.closeCode.toString());
 
-    debugPrint("Kick Chat: Connection closed");
     await close();
     if (onDone != null) {
       onDone!();
@@ -94,6 +112,52 @@ class KickChat {
   }
 
   void _chatListener(String message) {
-    _chatStreamController.add(message);
+    final KickEvent? kickEvent = eventParser(message);
+    switch (kickEvent?.event) {
+      case TypeEvent.message:
+        _chatStreamController.add(message);
+        break;
+      case TypeEvent.followersUpdated:
+        // TODO: TBD
+        break;
+      case TypeEvent.streamHostEvent:
+        _chatStreamController.add(message);
+        break;
+      case TypeEvent.subscriptionEvent:
+        _chatStreamController.add(message);
+        break;
+      case TypeEvent.chatroomUpdatedEvent:
+        // TODO: TBD
+        break;
+      case TypeEvent.userBannedEvent:
+        KickUserBanned event = kickEvent as KickUserBanned;
+
+        if (onDeletedMessageByUserId != null) {
+          onDeletedMessageByUserId!(event.data.user.id.toString());
+        }
+
+        break;
+      case TypeEvent.chatroomClearEvent:
+        KickChatroomClear event = kickEvent as KickChatroomClear;
+        //TODO
+        break;
+      case TypeEvent.giftedSubscriptionsEvent:
+        _chatStreamController.add(message);
+        break;
+      case TypeEvent.pinnedMessageCreatedEvent:
+        // TODO
+        break;
+      case TypeEvent.pollUpdateEvent:
+        // TODO
+        break;
+      case TypeEvent.messageDeletedEvent:
+        KickMessageDeleted event = kickEvent as KickMessageDeleted;
+        if (onDeletedMessageByMessageId != null) {
+          onDeletedMessageByMessageId!(event.data.message.id);
+        }
+        break;
+      case null:
+        break;
+    }
   }
 }
