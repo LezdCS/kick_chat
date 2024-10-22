@@ -115,16 +115,16 @@ class KickChat {
     final KickEvent? kickEvent = eventParser(message);
     switch (kickEvent?.event) {
       case TypeEvent.message:
-        _chatStreamController.add(message);
+        _chatStreamController.add(kickEvent as KickMessage);
         break;
       case TypeEvent.followersUpdated:
         // TODO: TBD
         break;
       case TypeEvent.streamHostEvent:
-        _chatStreamController.add(message);
+        _chatStreamController.add(kickEvent as KickStreamHost);
         break;
       case TypeEvent.subscriptionEvent:
-        _chatStreamController.add(message);
+        _chatStreamController.add(kickEvent as KickSubscription);
         break;
       case TypeEvent.chatroomUpdatedEvent:
         // TODO: TBD
@@ -142,7 +142,7 @@ class KickChat {
         //TODO
         break;
       case TypeEvent.giftedSubscriptionsEvent:
-        _chatStreamController.add(message);
+        _chatStreamController.add(message as KickGiftedSubscriptions);
         break;
       case TypeEvent.pinnedMessageCreatedEvent:
         // TODO
