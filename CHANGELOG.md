@@ -60,3 +60,6 @@ Fix Connect
 ## 1.5.1
 - Breaking changes: The chatStream now can only send KickEvent objects
 - Tests
+
+## 1.5.2
+Pinned message support
