@@ -7,6 +7,7 @@ import 'package:kick_chat/src/events/kick_gifted_subscriptions.dart';
 import 'package:kick_chat/src/events/kick_message.dart';
 import 'package:kick_chat/src/events/kick_message_deleted.dart';
 import 'package:kick_chat/src/events/kick_pinned_message_created.dart';
+import 'package:kick_chat/src/events/kick_pinned_message_deleted.dart';
 import 'package:kick_chat/src/events/kick_poll_update.dart';
 import 'package:kick_chat/src/events/kick_stream_host.dart';
 import 'package:kick_chat/src/events/kick_subscription.dart';
@@ -35,6 +36,8 @@ KickEvent? eventParser(String message) {
       return KickGiftedSubscriptions.fromJson(jsonMessage);
     case TypeEvent.pinnedMessageCreatedEvent:
       return KickPinnedMessageCreated.fromJson(jsonMessage);
+    case TypeEvent.pinnedMessageDeletedEvent:
+      return KickPinnedMessageDeleted.fromJson(jsonMessage);
     case TypeEvent.pollUpdateEvent:
       return KickPollUpdate.fromJson(jsonMessage);
     case TypeEvent.messageDeletedEvent:

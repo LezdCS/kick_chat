@@ -69,3 +69,6 @@ Fix
 
 ## 1.5.4
 Export type KickPinnedMessageDeleted
+
+## 1.5.5
+Export type KickPinnedMessageDeleted
