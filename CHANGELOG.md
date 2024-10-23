@@ -66,3 +66,6 @@ Pinned message support
 
 ## 1.5.3
 Fix
+
+## 1.5.4
+Export type KickPinnedMessageDeleted

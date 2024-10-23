@@ -14,6 +14,7 @@ export 'src/events/kick_chatroom_update.dart' show KickChatroomUpdated;
 export 'src/events/kick_followers_updated.dart' show KickFollowersUpdated;
 export 'src/events/kick_gifted_subscriptions.dart' show KickGiftedSubscriptions;
 export 'src/events/kick_pinned_message_created.dart' show KickPinnedMessageCreated;
+export 'src/events/kick_pinned_message_deleted.dart' show KickPinnedMessageDeleted;
 export 'src/events/kick_poll_update.dart' show KickPollUpdate;
 export 'src/events/kick_stream_host.dart' show KickStreamHost;
 export 'src/events/kick_subscription.dart' show KickSubscription;
