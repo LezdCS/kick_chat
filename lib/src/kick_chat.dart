@@ -5,10 +5,13 @@ import 'package:api_7tv/api_7tv.dart';
 import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kick_chat/kick_chat.dart';
+import 'package:kick_chat/src/events/kick_pinned_message_deleted.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 typedef MessageDeletedCallback = void Function(String);
 typedef ChatroomClearCallback = void Function(String);
+typedef MessagePinnedCallback = void Function(KickPinnedMessageCreated);
+typedef MessageUnpinnedCallback = void Function(KickPinnedMessageDeleted);
 
 class KickChat {
   String username;
@@ -29,6 +32,8 @@ class KickChat {
   final MessageDeletedCallback? onDeletedMessageByUserId;
   final MessageDeletedCallback? onDeletedMessageByMessageId;
   final ChatroomClearCallback? onChatroomClear;
+  final MessagePinnedCallback? onMessagePinned;
+  final MessageUnpinnedCallback? onMessageUnpinned;
 
   KickChat(
     this.username,
@@ -38,6 +43,8 @@ class KickChat {
     this.onDeletedMessageByUserId,
     this.onDeletedMessageByMessageId,
     this.onChatroomClear,
+    this.onMessagePinned,
+    this.onMessageUnpinned,
   });
 
   set onDeletedMessageByUserId(
@@ -56,6 +63,18 @@ class KickChat {
     ChatroomClearCallback? onChatroomClear,
   ) {
     this.onChatroomClear = onChatroomClear;
+  }
+
+  set onMessagePinned(
+    MessagePinnedCallback? onMessagePinned,
+  ) {
+    this.onMessagePinned = onMessagePinned;
+  }
+
+  set onMessageUnpinned(
+    MessageUnpinnedCallback? onMessageUnpinned,
+  ) {
+    this.onMessageUnpinned = onMessageUnpinned;
   }
 
   static Future init() async {
@@ -143,11 +162,9 @@ class KickChat {
         break;
       case TypeEvent.userBannedEvent:
         KickUserBanned event = kickEvent as KickUserBanned;
-
         if (onDeletedMessageByUserId != null) {
           onDeletedMessageByUserId!(event.data.user.id.toString());
         }
-
         break;
       case TypeEvent.chatroomClearEvent:
         // KickChatroomClear event = kickEvent as KickChatroomClear;
@@ -157,7 +174,14 @@ class KickChat {
         _chatStreamController.add(message as KickGiftedSubscriptions);
         break;
       case TypeEvent.pinnedMessageCreatedEvent:
-        // TODO
+        if(onMessagePinned != null) {
+          onMessagePinned!(kickEvent as KickPinnedMessageCreated);
+        }
+        break;
+      case TypeEvent.pinnedMessageDeletedEvent:
+        if(onMessageUnpinned != null) {
+          onMessageUnpinned!(kickEvent as KickPinnedMessageDeleted);
+        }
         break;
       case TypeEvent.pollUpdateEvent:
         // TODO

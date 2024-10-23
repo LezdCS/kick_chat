@@ -20,6 +20,8 @@ TypeEvent? stringToEvent(String s) {
       return TypeEvent.giftedSubscriptionsEvent;
     case 'App\\Events\\PinnedMessageCreatedEvent':
       return TypeEvent.pinnedMessageCreatedEvent;
+    case 'App\\Events\\PinnedMessageDeletedEvent':
+      return TypeEvent.pinnedMessageDeletedEvent;
     case 'App\\Events\\PollUpdateEvent':
       return TypeEvent.pollUpdateEvent;
     case 'App\\Events\\MessageDeletedEvent':

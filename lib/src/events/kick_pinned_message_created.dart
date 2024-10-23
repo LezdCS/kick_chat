@@ -13,7 +13,7 @@ class KickPinnedMessageCreated extends KickEvent {
 
   factory KickPinnedMessageCreated.fromJson(Map<String, dynamic> map) {
     return KickPinnedMessageCreated(
-      event: TypeEvent.followersUpdated,
+      event: TypeEvent.pinnedMessageCreatedEvent,
       data: Data.fromJson(jsonDecode(map['data'])),
       channel: map['channel'],
     );
