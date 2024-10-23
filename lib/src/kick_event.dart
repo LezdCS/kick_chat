@@ -8,6 +8,7 @@ enum TypeEvent {
   chatroomClearEvent,
   giftedSubscriptionsEvent,
   pinnedMessageCreatedEvent,
+  pinnedMessageDeletedEvent,
   pollUpdateEvent,
   messageDeletedEvent,
 }
