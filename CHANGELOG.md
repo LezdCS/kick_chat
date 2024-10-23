@@ -63,3 +63,6 @@ Fix Connect
 
 ## 1.5.2
 Pinned message support
+
+## 1.5.3
+Fix
