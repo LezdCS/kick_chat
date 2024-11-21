@@ -72,3 +72,6 @@ Export type KickPinnedMessageDeleted
 
 ## 1.5.5
 Export type KickPinnedMessageDeleted
+
+## 1.6.0
+Replace fk_user_agent for ua_client_hints

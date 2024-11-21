@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:api_7tv/api_7tv.dart';
-import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kick_chat/kick_chat.dart';
-import 'package:kick_chat/src/events/kick_pinned_message_deleted.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 typedef MessageDeletedCallback = void Function(String);
@@ -27,7 +24,9 @@ class KickChat {
   final Function? onError;
 
   final StreamController _chatStreamController = StreamController.broadcast();
-  Stream<KickEvent> get chatStream => _chatStreamController.stream.where((event) => event is KickEvent).cast<KickEvent>();
+  Stream<KickEvent> get chatStream => _chatStreamController.stream
+      .where((event) => event is KickEvent)
+      .cast<KickEvent>();
 
   final MessageDeletedCallback? onDeletedMessageByUserId;
   final MessageDeletedCallback? onDeletedMessageByMessageId;
@@ -77,12 +76,7 @@ class KickChat {
     this.onMessageUnpinned = onMessageUnpinned;
   }
 
-  static Future init() async {
-    if (!Platform.isAndroid && !Platform.isIOS) {
-      return;
-    }
-    await FkUserAgent.init();
-  }
+  static Future init() async {}
 
   Future<void> connect() async {
     userDetails = await KickApi.getUserDetails(username);
@@ -174,12 +168,12 @@ class KickChat {
         _chatStreamController.add(message as KickGiftedSubscriptions);
         break;
       case TypeEvent.pinnedMessageCreatedEvent:
-        if(onMessagePinned != null) {
+        if (onMessagePinned != null) {
           onMessagePinned!(kickEvent as KickPinnedMessageCreated);
         }
         break;
       case TypeEvent.pinnedMessageDeletedEvent:
-        if(onMessageUnpinned != null) {
+        if (onMessageUnpinned != null) {
           onMessageUnpinned!(kickEvent as KickPinnedMessageDeleted);
         }
         break;
