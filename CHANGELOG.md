@@ -81,3 +81,6 @@ Fix getting Kick user details
 
 ## 1.7.1
 Add logging 
+
+## 1.7.1
+Add more logging 

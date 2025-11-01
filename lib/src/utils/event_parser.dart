@@ -52,7 +52,8 @@ KickEvent? eventParser(String message) {
     //   return null;
     default:
       final eventName = jsonMessage['event'] ?? 'unknown';
-      _logger.finest('Unhandled event type: $eventName');
+      _logger.fine('Raw message: $message');
+      _logger.fine('Unhandled event type: $eventName');
       return null;
   }
   } on FormatException catch (e, stackTrace) {
