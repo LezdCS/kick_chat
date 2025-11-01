@@ -9,6 +9,7 @@ void main() {
   String username = 'Lezd';
   test('Listen to a Kick chat', () async {
     WidgetsFlutterBinding.ensureInitialized();
+    KickChat.configureLogging(Level.ALL);
     await KickChat.init();
     KickChat chat = KickChat(username, '32cbd69e4b950bf97679');
     chat.connect();
@@ -28,6 +29,7 @@ void main() {
   }, timeout: const Timeout.factor(20));
   test('Get channel user details', () async {
     WidgetsFlutterBinding.ensureInitialized();
+    KickChat.configureLogging(Level.ALL);
     await KickChat.init();
     KickUser? userDetails = await KickApi.getUserDetails(username);
     expect(username.toLowerCase(), userDetails?.slug,
@@ -37,6 +39,7 @@ void main() {
 
   test('Get 7TV Kick channel emotes', () async {
     WidgetsFlutterBinding.ensureInitialized();
+    KickChat.configureLogging(Level.ALL);
     await KickChat.init();
     KickUser? userDetails = await KickApi.getUserDetails(username);
     if (userDetails == null) throw Exception('User details not found');

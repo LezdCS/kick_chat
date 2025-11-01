@@ -75,3 +75,9 @@ Export type KickPinnedMessageDeleted
 
 ## 1.6.0
 Replace fk_user_agent for ua_client_hints
+
+## 1.7.0
+Fix getting Kick user details
+
+## 1.7.1
+Add logging 

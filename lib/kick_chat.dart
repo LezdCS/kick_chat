@@ -1,5 +1,6 @@
 library kick_chat;
 
+export 'package:logging/logging.dart' show Level;
 export 'src/kick_chat.dart';
 export 'src/kick_event.dart';
 export 'src/utils/kick_api.dart';

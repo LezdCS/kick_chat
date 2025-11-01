@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:logging/logging.dart';
 import 'package:kick_chat/src/events/kick_chatroom_clear.dart';
 import 'package:kick_chat/src/events/kick_chatroom_update.dart';
 import 'package:kick_chat/src/events/kick_followers_updated.dart';
@@ -15,8 +16,11 @@ import 'package:kick_chat/src/events/kick_user_banned.dart';
 import 'package:kick_chat/src/kick_event.dart';
 import 'package:kick_chat/src/utils/string_to_event.dart';
 
+final _logger = Logger('EventParser');
+
 KickEvent? eventParser(String message) {
-  Map<String, dynamic> jsonMessage = jsonDecode(message);
+  try {
+    Map<String, dynamic> jsonMessage = jsonDecode(message);
   switch (stringToEvent(jsonMessage['event'])) {
     case TypeEvent.message:
       return KickMessage.fromJson(jsonMessage);
@@ -47,6 +51,25 @@ KickEvent? eventParser(String message) {
     // case 'App\\Events\\StreamerIsLive':
     //   return null;
     default:
+      final eventName = jsonMessage['event'] ?? 'unknown';
+      _logger.finest('Unhandled event type: $eventName');
       return null;
+  }
+  } on FormatException catch (e, stackTrace) {
+    _logger.warning(
+      'Failed to parse message as JSON: ${e.message}',
+      e,
+      stackTrace,
+    );
+    _logger.fine('Raw message: $message');
+    return null;
+  } catch (e, stackTrace) {
+    _logger.severe(
+      'Unexpected error while parsing event: ${e.toString()}',
+      e,
+      stackTrace,
+    );
+    _logger.fine('Raw message: $message');
+    return null;
   }
 }
